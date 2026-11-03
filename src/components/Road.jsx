@@ -6,7 +6,7 @@ import './Road.css'
 const ROAD_WIDTH = 2.4
 const ROAD_LENGTH = 128
 const ROAD_START_Z = 9.6
-const TILE_SIZE = 0.4
+const TILE_SIZE = 0.6
 const TILES_PER_SIDE = ROAD_WIDTH / TILE_SIZE
 const TEXTURE_SIZE = 1024
 
@@ -63,7 +63,7 @@ function createMarbleTexture({ tile, grout, vein }) {
   }
 
   ctx.strokeStyle = grout
-  ctx.lineWidth = 4
+  ctx.lineWidth = 6
   for (let i = 0; i <= TILES_PER_SIDE; i++) {
     const p = i * step
     ctx.beginPath()
