@@ -6,7 +6,7 @@ import './Road.css'
 function Tile({ z, color, glow, grid }) {
   return (
     <mesh position={[0, 0.02, z]}>
-      <boxGeometry args={[4, 0.1, 3.2]} />
+      <boxGeometry args={[2.4, 0.1, 3.2]} />
       <meshPhysicalMaterial
         color={color}
         emissive={glow}
@@ -15,7 +15,7 @@ function Tile({ z, color, glow, grid }) {
         roughness={0.25}
         envMapIntensity={1}
       />
-      <Edges color={grid} lineWidth={2} />
+      <Edges color={grid} lineWidth={2} fog />
     </mesh>
   )
 }
@@ -33,7 +33,7 @@ export default function Road() {
 
   return (
     <group>
-      {Array.from({ length: 70 }, (_, i) => (
+      {Array.from({ length: 40 }, (_, i) => (
         <Tile
           key={i}
           z={-((i - 3) * 3.2 + 1.6)}
@@ -42,9 +42,9 @@ export default function Road() {
           grid={colors.grid}
         />
       ))}
-      {[-2.1, 2.1].map((x) => (
-        <mesh key={x} position={[x, 0.12, -107.2]}>
-          <boxGeometry args={[0.08, 0.08, 224]} />
+      {[-1.3, 1.3].map((x) => (
+        <mesh key={x} position={[x, 0.12, -54.4]}>
+          <boxGeometry args={[0.08, 0.08, 128]} />
           <meshBasicMaterial color={colors.rail} />
         </mesh>
       ))}
