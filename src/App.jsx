@@ -16,18 +16,16 @@ function CameraTarget() {
 
 export default function App() {
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
-      <Canvas
-        gl={{ antialias: true }}
-        camera={{ position: CAMERA_POSITION, fov: 60, near: 0.1, far: 1000 }}
-      >
-        <CameraTarget />
-        {/* Franja provisional para ver el punto de fuga. Se borra en HU-02. */}
-        <mesh position={[0, 0, -32]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[4, 64]} />
-          <meshBasicMaterial color="#8a5cf6" />
-        </mesh>
-      </Canvas>
-    </div>
+    <Canvas
+      gl={{ antialias: true }}
+      camera={{ position: CAMERA_POSITION, fov: 60, near: 0.1, far: 1000 }}
+    >
+      <CameraTarget />
+      {/* Franja provisional para ver el punto de fuga. Se borra en HU-02. */}
+      <mesh position={[0, 0, -32]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[4, 64]} />
+        <meshBasicMaterial color="#8a5cf6" />
+      </mesh>
+    </Canvas>
   )
 }
