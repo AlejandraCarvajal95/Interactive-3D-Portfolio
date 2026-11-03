@@ -1,8 +1,8 @@
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { Environment, Lightformer } from '@react-three/drei'
 import CameraTarget from './components/CameraTarget.jsx'
 import Sky from './components/Sky.jsx'
+import SkyReflection from './components/SkyReflection.jsx'
 import Water from './components/Water.jsx'
 import './App.css'
 
@@ -19,33 +19,7 @@ export default function App() {
       >
         <CameraTarget target={CAMERA_TARGET} />
         <Suspense fallback={null}>
-          <Environment files="/hdri/qwantani_dusk_2_puresky_1k.hdr">
-            <Lightformer
-              color="#ffa078"
-              intensity={1.2}
-              position={[0, 1, -15]}
-              scale={[60, 3, 1]}
-            />
-            <Lightformer
-              color="#ffa3cc"
-              intensity={0.9}
-              position={[0, 5, -15]}
-              scale={[60, 8, 1]}
-            />
-            <Lightformer
-              form="circle"
-              color="#fff1d0"
-              intensity={3}
-              position={[0, 2, -15]}
-              scale={4}
-            />
-            <Lightformer
-              color="#9ec5ff"
-              intensity={0.8}
-              position={[0, 14, -10]}
-              scale={[80, 20, 1]}
-            />
-          </Environment>
+          <SkyReflection />
         </Suspense>
         <Water />
         {/* Franja provisional para ver el punto de fuga. Se borra en HU-02. */}
