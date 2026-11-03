@@ -29,7 +29,14 @@ export default function Road() {
 
   return (
     <group>
-      <Tile z={-1.6} color={colors.tile} glow={colors.glow} />
+      {Array.from({ length: 20 }, (_, i) => (
+        <Tile
+          key={i}
+          z={-(i * 3.2 + 1.6)}
+          color={colors.tile}
+          glow={colors.glow}
+        />
+      ))}
     </group>
   )
 }
