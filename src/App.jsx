@@ -8,7 +8,7 @@ export default function App() {
         <directionalLight position={[3, 3, 3]} />
         <mesh rotation={[0.5, 0.6, 0]}>
           <boxGeometry args={[1, 1, 1]} />
-          <meshStandardMaterial color="hotpink" />
+          <meshStandardMaterial color="blue" />
         </mesh>
       </Canvas>
     </div>
