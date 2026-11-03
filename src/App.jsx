@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import CameraTarget from './components/CameraTarget.jsx'
 import Fog from './components/Fog.jsx'
+import Primitive from './components/Primitive.jsx'
 import Sky from './components/Sky.jsx'
 import Road from './components/Road.jsx'
 import SkyReflection from './components/SkyReflection.jsx'
@@ -26,6 +27,7 @@ export default function App() {
         </Suspense>
         <Water />
         <Road />
+        <Primitive color="#ff9fc8" position={[-6, 1, -12]} />
       </Canvas>
     </div>
   )
