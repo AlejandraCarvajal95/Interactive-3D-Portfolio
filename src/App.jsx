@@ -22,7 +22,7 @@ export default function App() {
       gl={{ antialias: true }}
       camera={{ position: CAMERA_POSITION, fov: 60, near: 0.1, far: 1000 }}
     >
-      <color attach="background" args={['#3a2266']} />
+      <color attach="background" args={['#5a4bd1']} />
       <CameraTarget />
       <Suspense fallback={null}>
         <Environment files="/hdri/qwantani_dusk_2_puresky_1k.hdr">
