@@ -2,11 +2,12 @@ import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import CameraTarget from './components/CameraTarget.jsx'
 import Fog from './components/Fog.jsx'
-import Primitive from './components/Primitive.jsx'
+import MiniCity from './components/MiniCity.jsx'
 import Sky from './components/Sky.jsx'
 import Road from './components/Road.jsx'
 import SkyReflection from './components/SkyReflection.jsx'
 import Water from './components/Water.jsx'
+import { CITY_SCALE } from './constants.js'
 import './App.css'
 
 const CAMERA_POSITION = [0, 3.5, 0]
@@ -27,9 +28,9 @@ export default function App() {
         </Suspense>
         <Water />
         <Road />
-        <Primitive shape="sphere" color="#ff9fc8" position={[-6, 1, -12]} />
-        <Primitive shape="cylinder" color="#8fd3e8" position={[6, 1, -16]} />
-        <Primitive shape="box" color="#ffc59a" position={[-6, 1, -22]} />
+        <group position={[-9, 0, -14]} scale={CITY_SCALE}>
+          <MiniCity />
+        </group>
       </Canvas>
     </div>
   )
