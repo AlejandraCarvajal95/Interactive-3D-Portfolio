@@ -1,4 +1,7 @@
+import { useMemo } from 'react'
 import { CanvasTexture, RepeatWrapping } from 'three'
+import { readCssVar } from '../utils/cssVar.js'
+import './Water.css'
 
 function createRippleTexture() {
   const size = 256
@@ -27,11 +30,13 @@ function createRippleTexture() {
 const rippleTexture = createRippleTexture()
 
 export default function Water() {
+  const color = useMemo(() => readCssVar('--water-color'), [])
+
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.15, 0]}>
       <planeGeometry args={[500, 500]} />
       <meshPhysicalMaterial
-        color="#18aeb4"
+        color={color}
         metalness={0.1}
         roughness={0.06}
         envMapIntensity={1.2}
