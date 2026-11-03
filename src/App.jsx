@@ -25,7 +25,7 @@ export default function App() {
       <color attach="background" args={['#1a0535']} />
       <CameraTarget />
       <Suspense fallback={null}>
-        <Environment preset="sunset" />
+        <Environment files="/hdri/qwantani_dusk_2_puresky_1k.hdr" />
       </Suspense>
       <Water />
       {/* Franja provisional para ver el punto de fuga. Se borra en HU-02. */}
