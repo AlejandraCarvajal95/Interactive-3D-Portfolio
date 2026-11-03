@@ -1,12 +1,16 @@
 import { useMemo } from 'react'
 import { CanvasTexture, RepeatWrapping, SRGBColorSpace } from 'three'
 import { readCssVar } from '../utils/cssVar.js'
+import {
+  ROAD_LENGTH,
+  ROAD_START_Z,
+  ROAD_THICKNESS,
+  ROAD_WIDTH,
+  ROAD_Y,
+  TILE_SIZE,
+} from '../constants.js'
 import './Road.css'
 
-const ROAD_WIDTH = 2.4
-const ROAD_LENGTH = 128
-const ROAD_START_Z = 9.6
-const TILE_SIZE = 0.6
 const TILES_PER_SIDE = ROAD_WIDTH / TILE_SIZE
 const TEXTURE_SIZE = 1024
 
@@ -95,8 +99,8 @@ export default function Road() {
   )
 
   return (
-    <mesh position={[0, 0.02, ROAD_START_Z - ROAD_LENGTH / 2]}>
-      <boxGeometry args={[ROAD_WIDTH, 0.1, ROAD_LENGTH]} />
+    <mesh position={[0, ROAD_Y, ROAD_START_Z - ROAD_LENGTH / 2]}>
+      <boxGeometry args={[ROAD_WIDTH, ROAD_THICKNESS, ROAD_LENGTH]} />
       <meshStandardMaterial
         map={marble}
         roughness={0.45}

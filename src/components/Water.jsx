@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { CanvasTexture, RepeatWrapping } from 'three'
 import { readCssVar } from '../utils/cssVar.js'
+import { WATER_SIZE, WATER_Y } from '../constants.js'
 import './Water.css'
 
 const TWO_PI = Math.PI * 2
@@ -48,8 +49,8 @@ export default function Water() {
   const color = useMemo(() => readCssVar('--water-color'), [])
 
   return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.15, 0]}>
-      <planeGeometry args={[500, 500]} />
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, WATER_Y, 0]}>
+      <planeGeometry args={[WATER_SIZE, WATER_SIZE]} />
       <meshPhysicalMaterial
         color={color}
         metalness={0.1}
