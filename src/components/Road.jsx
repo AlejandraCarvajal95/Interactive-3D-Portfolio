@@ -103,6 +103,9 @@ export default function Road() {
       <boxGeometry args={[ROAD_WIDTH, ROAD_THICKNESS, ROAD_LENGTH]} />
       <meshStandardMaterial
         map={marble}
+        emissive="#ffffff"
+        emissiveMap={marble}
+        emissiveIntensity={0.9}
         roughness={0.45}
         metalness={0}
         envMapIntensity={0.7}

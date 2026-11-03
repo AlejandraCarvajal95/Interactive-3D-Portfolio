@@ -1,8 +1,8 @@
 :root {
-  --city-platform-color: #e9e2f2;
-  --city-building-color: #d3d8f0;
-  --city-orb-color: #fff6ee;
-  --city-1-accent: #ff9fc8;
-  --city-2-accent: #8fd3e8;
-  --city-3-accent: #ffc59a;
+  --city-platform-color: #0d0025;
+  --city-building-color: #424a6e;
+  --city-orb-color: #ffffff;
+  --city-1-accent: #ff44cc;
+  --city-2-accent: #44aaff;
+  --city-3-accent: #aaff66;
 }
