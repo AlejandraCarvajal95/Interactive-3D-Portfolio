@@ -24,11 +24,6 @@ export default function App() {
         </Suspense>
         <Water />
         <Road />
-        {/* Franja provisional para ver el punto de fuga. Se borra en HU-02. */}
-        <mesh position={[0, 0, -32]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[4, 64]} />
-          <meshBasicMaterial color="#8a5cf6" />
-        </mesh>
       </Canvas>
     </div>
   )
