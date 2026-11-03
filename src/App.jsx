@@ -20,6 +20,7 @@ export default function App() {
       gl={{ antialias: true }}
       camera={{ position: CAMERA_POSITION, fov: 60, near: 0.1, far: 1000 }}
     >
+      <color attach="background" args={['#1a0535']} />
       <CameraTarget />
       {/* Franja provisional para ver el punto de fuga. Se borra en HU-02. */}
       <mesh position={[0, 0, -32]} rotation={[-Math.PI / 2, 0, 0]}>
