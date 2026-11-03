@@ -22,11 +22,10 @@ export default function App() {
         camera={{ position: CAMERA_POSITION, fov: 60, near: 0.1, far: 1000 }}
       >
         <CameraTarget />
-        <ambientLight intensity={0.6} />
-        <directionalLight position={[3, 3, 3]} />
-        <mesh rotation={[0.5, 0.6, 0]}>
-          <boxGeometry args={[1, 1, 1]} />
-          <meshStandardMaterial color="blue" />
+        {/* Franja provisional para ver el punto de fuga. Se borra en HU-02. */}
+        <mesh position={[0, 0, -32]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[4, 64]} />
+          <meshBasicMaterial color="#8a5cf6" />
         </mesh>
       </Canvas>
     </div>
