@@ -31,10 +31,10 @@ export default function Water() {
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.15, 0]}>
       <planeGeometry args={[500, 500]} />
       <meshPhysicalMaterial
-        color="#a592c4"
-        metalness={0.97}
-        roughness={0.08}
-        envMapIntensity={2.2}
+        color="#18aeb4"
+        metalness={0.1}
+        roughness={0.06}
+        envMapIntensity={1.2}
         bumpMap={rippleTexture}
         bumpScale={0.35}
       />
