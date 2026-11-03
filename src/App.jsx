@@ -8,7 +8,7 @@ import SkyReflection from './components/SkyReflection.jsx'
 import Water from './components/Water.jsx'
 import './App.css'
 
-const CAMERA_POSITION = [0, 1.5, 0]
+const CAMERA_POSITION = [0, 3.5, 0]
 const CAMERA_TARGET = [0, 1.3, -30]
 
 export default function App() {
