@@ -3,9 +3,9 @@ export default function Water() {
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.15, 0]}>
       <planeGeometry args={[500, 500]} />
       <meshPhysicalMaterial
-        color="#06001a"
+        color="#a592c4"
         metalness={0.97}
-        roughness={0.03}
+        roughness={0.12}
         envMapIntensity={2.2}
       />
     </mesh>
