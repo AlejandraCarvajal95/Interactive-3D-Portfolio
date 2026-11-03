@@ -38,6 +38,19 @@ export default function App() {
             position={[0, 5, -15]}
             scale={[60, 8, 1]}
           />
+          <Lightformer
+            form="circle"
+            color="#fff1d0"
+            intensity={3}
+            position={[0, 2, -15]}
+            scale={4}
+          />
+          <Lightformer
+            color="#9ec5ff"
+            intensity={0.8}
+            position={[0, 14, -10]}
+            scale={[80, 20, 1]}
+          />
         </Environment>
       </Suspense>
       <Water />
