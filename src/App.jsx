@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import CameraTarget from './components/CameraTarget.jsx'
 import DebugControls from './components/DebugControls.jsx'
 import Fog from './components/Fog.jsx'
-import MiniCityBase from './components/mini-cities/MiniCityBase.jsx'
+import MiniCities from './components/mini-cities/MiniCities.jsx'
 import Sky from './components/Sky.jsx'
 import Road from './components/Road.jsx'
 import SkyReflection from './components/SkyReflection.jsx'
@@ -30,11 +30,7 @@ export default function App() {
         </Suspense>
         <Water />
         <Road />
-        <MiniCityBase
-          name="prueba"
-          position={[-9, 0, -14]}
-          accentVar="--city-test-accent"
-        />
+        <MiniCities />
       </Canvas>
     </div>
   )
