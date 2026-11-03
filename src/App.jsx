@@ -1,20 +1,11 @@
-import { Suspense, useLayoutEffect } from 'react'
-import { Canvas, useThree } from '@react-three/fiber'
+import { Suspense } from 'react'
+import { Canvas } from '@react-three/fiber'
 import { Environment, Lightformer } from '@react-three/drei'
+import CameraTarget from './components/CameraTarget.jsx'
 import Water from './components/Water.jsx'
 
 const CAMERA_POSITION = [0, 3, 20]
 const CAMERA_TARGET = [0, 2, -5]
-
-function CameraTarget() {
-  const camera = useThree((state) => state.camera)
-
-  useLayoutEffect(() => {
-    camera.lookAt(...CAMERA_TARGET)
-  }, [camera])
-
-  return null
-}
 
 export default function App() {
   return (
@@ -23,7 +14,7 @@ export default function App() {
       camera={{ position: CAMERA_POSITION, fov: 60, near: 0.1, far: 1000 }}
     >
       <color attach="background" args={['#5a4bd1']} />
-      <CameraTarget />
+      <CameraTarget target={CAMERA_TARGET} />
       <Suspense fallback={null}>
         <Environment files="/hdri/qwantani_dusk_2_puresky_1k.hdr">
           <Lightformer
