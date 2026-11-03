@@ -1,5 +1,6 @@
 import { useLayoutEffect } from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
+import Water from './components/Water.jsx'
 
 const CAMERA_POSITION = [0, 3, 20]
 const CAMERA_TARGET = [0, 2, -5]
@@ -22,6 +23,7 @@ export default function App() {
     >
       <color attach="background" args={['#1a0535']} />
       <CameraTarget />
+      <Water />
       {/* Franja provisional para ver el punto de fuga. Se borra en HU-02. */}
       <mesh position={[0, 0, -32]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[4, 64]} />
