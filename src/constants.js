@@ -13,3 +13,7 @@ export const TILE_SIZE = 0.4
 // Agua
 export const WATER_SIZE = 500
 export const WATER_Y = -0.15
+
+// Mini-ciudades: las medidas de index2.html (plataforma de radio 10) se reducen
+// a esta escala para que quepan junto a la carretera.
+export const CITY_SCALE = 0.4
