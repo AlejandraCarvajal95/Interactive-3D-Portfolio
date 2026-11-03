@@ -33,18 +33,18 @@ export default function Road() {
 
   return (
     <group>
-      {Array.from({ length: 20 }, (_, i) => (
+      {Array.from({ length: 70 }, (_, i) => (
         <Tile
           key={i}
-          z={-(i * 3.2 + 1.6)}
+          z={-((i - 3) * 3.2 + 1.6)}
           color={colors.tile}
           glow={colors.glow}
           grid={colors.grid}
         />
       ))}
       {[-2.1, 2.1].map((x) => (
-        <mesh key={x} position={[x, 0.12, -32]}>
-          <boxGeometry args={[0.08, 0.08, 64]} />
+        <mesh key={x} position={[x, 0.12, -107.2]}>
+          <boxGeometry args={[0.08, 0.08, 224]} />
           <meshBasicMaterial color={colors.rail} />
         </mesh>
       ))}
