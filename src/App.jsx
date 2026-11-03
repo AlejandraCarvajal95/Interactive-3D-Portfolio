@@ -1,8 +1,8 @@
 import { useLayoutEffect } from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
 
-const CAMERA_POSITION = [0, 6, 20]
-const CAMERA_TARGET = [0, 3, -5]
+const CAMERA_POSITION = [0, 3, 20]
+const CAMERA_TARGET = [0, 2, -5]
 
 function CameraTarget() {
   const camera = useThree((state) => state.camera)
