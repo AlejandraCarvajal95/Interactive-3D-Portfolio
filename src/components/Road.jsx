@@ -1,8 +1,9 @@
 import { useMemo } from 'react'
+import { Edges } from '@react-three/drei'
 import { readCssVar } from '../utils/cssVar.js'
 import './Road.css'
 
-function Tile({ z, color, glow }) {
+function Tile({ z, color, glow, grid }) {
   return (
     <mesh position={[0, 0.02, z]}>
       <boxGeometry args={[4, 0.1, 3.2]} />
@@ -14,6 +15,7 @@ function Tile({ z, color, glow }) {
         roughness={0.25}
         envMapIntensity={1}
       />
+      <Edges color={grid} />
     </mesh>
   )
 }
@@ -23,6 +25,7 @@ export default function Road() {
     () => ({
       tile: readCssVar('--road-tile-color'),
       glow: readCssVar('--road-tile-glow'),
+      grid: readCssVar('--road-grid-color'),
     }),
     [],
   )
@@ -35,6 +38,7 @@ export default function Road() {
           z={-(i * 3.2 + 1.6)}
           color={colors.tile}
           glow={colors.glow}
+          grid={colors.grid}
         />
       ))}
     </group>
