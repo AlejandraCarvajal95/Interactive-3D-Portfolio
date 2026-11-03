@@ -15,7 +15,7 @@ function Tile({ z, color, glow, grid }) {
         roughness={0.25}
         envMapIntensity={1}
       />
-      <Edges color={grid} />
+      <Edges color={grid} lineWidth={2} />
     </mesh>
   )
 }
