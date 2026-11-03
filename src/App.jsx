@@ -3,12 +3,11 @@ import { Canvas } from '@react-three/fiber'
 import CameraTarget from './components/CameraTarget.jsx'
 import DebugControls from './components/DebugControls.jsx'
 import Fog from './components/Fog.jsx'
-import MiniCity from './components/MiniCity.jsx'
+import MiniCityBase from './components/mini-cities/MiniCityBase.jsx'
 import Sky from './components/Sky.jsx'
 import Road from './components/Road.jsx'
 import SkyReflection from './components/SkyReflection.jsx'
 import Water from './components/Water.jsx'
-import { CITY_SCALE } from './constants.js'
 import { IS_DEBUG } from './utils/debug.js'
 import './App.css'
 
@@ -31,9 +30,11 @@ export default function App() {
         </Suspense>
         <Water />
         <Road />
-        <group position={[-9, 0, -14]} scale={CITY_SCALE}>
-          <MiniCity />
-        </group>
+        <MiniCityBase
+          name="prueba"
+          position={[-9, 0, -14]}
+          accentVar="--city-test-accent"
+        />
       </Canvas>
     </div>
   )

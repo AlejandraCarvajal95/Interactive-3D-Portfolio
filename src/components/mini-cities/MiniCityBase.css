@@ -2,7 +2,7 @@
   --city-platform-color: #0d0025;
   --city-building-color: #424a6e;
   --city-orb-color: #ffffff;
-  --city-1-accent: #ff44cc;
-  --city-2-accent: #44aaff;
-  --city-3-accent: #aaff66;
+}
+:root {
+  --city-test-accent: #ff44cc;
 }
