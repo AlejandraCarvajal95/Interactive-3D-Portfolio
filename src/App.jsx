@@ -27,7 +27,9 @@ export default function App() {
         </Suspense>
         <Water />
         <Road />
-        <Primitive color="#ff9fc8" position={[-6, 1, -12]} />
+        <Primitive shape="sphere" color="#ff9fc8" position={[-6, 1, -12]} />
+        <Primitive shape="cylinder" color="#8fd3e8" position={[6, 1, -16]} />
+        <Primitive shape="box" color="#ffc59a" position={[-6, 1, -22]} />
       </Canvas>
     </div>
   )
