@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import CameraTarget from './components/CameraTarget.jsx'
 import Sky from './components/Sky.jsx'
+import Road from './components/Road.jsx'
 import SkyReflection from './components/SkyReflection.jsx'
 import Water from './components/Water.jsx'
 import './App.css'
@@ -22,6 +23,7 @@ export default function App() {
           <SkyReflection />
         </Suspense>
         <Water />
+        <Road />
         {/* Franja provisional para ver el punto de fuga. Se borra en HU-02. */}
         <mesh position={[0, 0, -32]} rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[4, 64]} />
