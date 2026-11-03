@@ -26,6 +26,7 @@ export default function Road() {
       tile: readCssVar('--road-tile-color'),
       glow: readCssVar('--road-tile-glow'),
       grid: readCssVar('--road-grid-color'),
+      rail: readCssVar('--road-rail-color'),
     }),
     [],
   )
@@ -40,6 +41,12 @@ export default function Road() {
           glow={colors.glow}
           grid={colors.grid}
         />
+      ))}
+      {[-2.1, 2.1].map((x) => (
+        <mesh key={x} position={[x, 0.12, -32]}>
+          <boxGeometry args={[0.08, 0.08, 64]} />
+          <meshBasicMaterial color={colors.rail} />
+        </mesh>
       ))}
     </group>
   )
