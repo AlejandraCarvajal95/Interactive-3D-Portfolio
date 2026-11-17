@@ -4,6 +4,24 @@ Portafolio web 3D interactivo. El visitante recorre una carretera flotante sobre
 
 > Proyecto en desarrollo para el curso Diseño de Experiencias Web 3D (2026-2).
 
+## Demo en vivo
+
+**https://interactive-3d-portfolio-one.vercel.app**
+
+Se despliega automáticamente en Vercel con cada push a `main`.
+
+## Cómo moverte
+
+| Acción | Mouse y teclado | Touchpad |
+|---|---|---|
+| Avanzar y retroceder | `W` `S`, `↑` `↓` o la rueda del mouse | Deslizar dos dedos |
+| Moverte a los lados | `A` `D` o `←` `→` | `A` `D` o `←` `→` |
+| Saltar | `Espacio` | `Espacio` |
+| Mirar alrededor | Mover el mouse | Mover el cursor |
+| Ver un proyecto | Clic en su panel | Tocar el touchpad sobre su panel |
+
+La misma ayuda aparece en una tarjeta en la esquina superior derecha de la escena.
+
 ## Tecnologías
 
 - [React](https://react.dev)
@@ -71,5 +89,5 @@ Se activan con banderas en la URL y se pueden combinar (por ejemplo `/?stats&phy
 
 ## Ramas y despliegue
 
-- `main`: rama de producción. Cada push se despliega automáticamente en Vercel.
+- `main`: rama de producción. Cada push se despliega automáticamente en Vercel: https://interactive-3d-portfolio-one.vercel.app
 - `develop`: rama de trabajo.
