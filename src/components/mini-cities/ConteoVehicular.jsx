@@ -1,15 +1,16 @@
+import { PROJECT_BY_ID } from '../../data/projects.js'
 import MiniCityBase from './MiniCityBase.jsx'
 import './ConteoVehicular.css'
 
 // Proyecto: Reporte Conteo Vehicular AI (izquierda)
-const POSITION = [-9, 0, -48]
+const { id, position, accentVar } = PROJECT_BY_ID['conteo-vehicular']
 
 export default function ConteoVehicular() {
   return (
     <MiniCityBase
-      name="conteo-vehicular"
-      position={POSITION}
-      accentVar="--city-conteo-vehicular-accent"
+      name={id}
+      position={position}
+      accentVar={accentVar}
     />
   )
 }

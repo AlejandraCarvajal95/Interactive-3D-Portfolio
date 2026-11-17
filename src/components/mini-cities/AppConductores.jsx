@@ -1,15 +1,16 @@
+import { PROJECT_BY_ID } from '../../data/projects.js'
 import MiniCityBase from './MiniCityBase.jsx'
 import './AppConductores.css'
 
 // Proyecto: App Conductores (izquierda)
-const POSITION = [-9, 0, -14]
+const { id, position, accentVar } = PROJECT_BY_ID['app-conductores']
 
 export default function AppConductores() {
   return (
     <MiniCityBase
-      name="app-conductores"
-      position={POSITION}
-      accentVar="--city-app-conductores-accent"
+      name={id}
+      position={position}
+      accentVar={accentVar}
     />
   )
 }
