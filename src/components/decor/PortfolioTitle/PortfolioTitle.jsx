@@ -3,7 +3,7 @@ import Floating from '../../common/Floating/Floating.jsx'
 import MatcapMaterial from '../../common/MatcapMaterial/MatcapMaterial.jsx'
 
 const FONT_FILE = '/fonts/helvetiker_bold.typeface.json'
-const POSITION = [0, 5.4, -12]
+const POSITION = [0, 7.2, -12]
 
 // Título con volumen (Text3D): letras extruidas con bisel que proyectan sombra.
 // Text3D genera muchos polígonos; por eso se usa solo para este título corto y

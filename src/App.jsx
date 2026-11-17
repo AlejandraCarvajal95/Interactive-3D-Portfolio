@@ -8,7 +8,9 @@ import PortfolioTitle from './components/decor/PortfolioTitle/PortfolioTitle.jsx
 import Fog from './components/environment/Fog/Fog.jsx'
 import Road from './components/environment/Road/Road.jsx'
 import Sky from './components/environment/Sky/Sky.jsx'
+import SkyDome from './components/environment/SkyDome/SkyDome.jsx'
 import SkyReflection from './components/environment/SkyReflection/SkyReflection.jsx'
+import SunDisc from './components/environment/SunDisc/SunDisc.jsx'
 import Water from './components/environment/Water/Water.jsx'
 import GlassBubbles from './components/glass/GlassBubbles/GlassBubbles.jsx'
 import GlassFrames from './components/glass/GlassFrames/GlassFrames.jsx'
@@ -50,6 +52,8 @@ export default function App() {
           {IS_DEBUG && <DebugControls target={CAMERA_TARGET} />}
           {SHOW_STATS && <Stats />}
           <Fog />
+          <SkyDome />
+          <SunDisc />
           <SunLight />
           <SoftAmbient />
           <Suspense fallback={null}>
