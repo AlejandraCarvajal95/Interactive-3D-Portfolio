@@ -10,10 +10,6 @@
   background: var(--frame-info-bg);
   backdrop-filter: blur(8px);
   border-radius: 14px;
-  white-space: nowrap;
-}
-
-.frame-card {
   padding: 16px 20px;
   max-width: 300px;
   white-space: normal;

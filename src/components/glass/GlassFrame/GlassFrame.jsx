@@ -11,6 +11,9 @@ import './GlassFrame.css'
 const FONT_FILE = '/fonts/poppins-600.woff'
 const HOVER_SCALE = 1.06
 const SCALE_SPEED = 8 // qué tan rápido crece al pasar el cursor
+// Los textos no detectan el puntero: el rayo solo choca con el cristal y pasar
+// por encima del texto no hace parpadear el estado de hover.
+const noRaycast = () => null
 
 // Un panel de cristal con las esquinas redondeadas: la guía de una estación.
 // Muestra el nombre del proyecto, crece al pasar el cursor y, al hacer clic,
@@ -71,6 +74,7 @@ export default function GlassFrame({ id, name, description, active = false }) {
           anchorY="middle"
           position={[0, 0.3, FRAME_DEPTH / 2 + 0.02]}
           color={textColor}
+          raycast={noRaycast}
         >
           {name}
         </Text>
@@ -81,6 +85,7 @@ export default function GlassFrame({ id, name, description, active = false }) {
           anchorY="middle"
           position={[0, -0.75, FRAME_DEPTH / 2 + 0.02]}
           color={textColor}
+          raycast={noRaycast}
           visible={highlighted && !opened}
         >
           Clic para ver más

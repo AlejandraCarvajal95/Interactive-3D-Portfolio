@@ -15,16 +15,20 @@ const INSTRUCTIONS = [
     ],
   },
   {
+    label: 'Girar para mirar alrededor',
+    options: [
+      { keys: ['Q', 'E'] },
+      { keys: ['←', '→'] },
+      { text: 'Arrastra con el clic presionado' },
+    ],
+  },
+  {
     label: 'Moverte a los lados',
-    options: [{ keys: ['A', 'D'] }, { keys: ['←', '→'] }],
+    options: [{ keys: ['A', 'D'] }],
   },
   {
     label: 'Saltar',
     options: [{ keys: ['Espacio'] }],
-  },
-  {
-    label: 'Mirar alrededor',
-    options: [{ text: 'Mueve el mouse o el cursor del touchpad' }],
   },
   {
     label: 'Ver un proyecto',
