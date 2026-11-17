@@ -31,3 +31,31 @@ export const FRAME_HEIGHT = 3.2
 export const FRAME_DEPTH = 0.25
 export const FRAME_Z_OFFSET = 4.5
 export const FRAME_TURN = 0.6
+
+// Navegación: el visitante es un cuerpo físico (cápsula) que se mueve a lo
+// largo de la carretera. Los límites son paredes invisibles.
+export const NAV_START_Z = 0
+export const NAV_MAX_Z = 6 // límite de atrás (el inicio de la ruta)
+export const NAV_MIN_Z = -90 // límite del final de la ruta
+export const NAV_SPEED = 8 // unidades por segundo con W/S o las flechas
+export const NAV_STRAFE_SPEED = 2 // A/D o flechas laterales
+export const NAV_ACCEL = 6 // qué tan rápido alcanza la velocidad pedida
+export const WHEEL_GAIN = 0.08 // velocidad que suma cada unidad de la rueda o del touchpad
+export const WHEEL_MAX_SPEED = 12
+export const WHEEL_DECAY = 2.5 // qué tan rápido se frena el impulso de la rueda
+export const JUMP_IMPULSE = 2.5
+
+// Cámara: sigue al cuerpo con suavizado (lerp) y mira hacia adelante; el
+// puntero la desvía un poco, con un ángulo máximo.
+export const WALKER_RADIUS = 0.4
+export const WALKER_HALF_HEIGHT = 0.4 // mitad de la parte recta de la cápsula
+export const EYE_HEIGHT = 3.5 // altura de la cámara sobre el agua, en reposo
+export const NAV_SMOOTHING = 5 // más alto = la cámara sigue más rápido
+export const LOOK_AHEAD = 30 // a qué distancia delante mira la cámara
+export const LOOK_DROP = 2.2 // cuánto más abajo que la cámara mira
+export const LOOK_MAX_X = 12 // desvío horizontal máximo de la mirada
+export const LOOK_MAX_Y = 4 // desvío vertical máximo de la mirada
+export const LOOK_SMOOTHING = 4
+
+// Estación: zona a lo largo de la carretera donde "llegas" a un proyecto.
+export const STATION_HALF_LENGTH = 5
