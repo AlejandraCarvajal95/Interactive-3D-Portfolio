@@ -99,7 +99,7 @@ export default function Road() {
   )
 
   return (
-    <mesh position={[0, ROAD_Y, ROAD_START_Z - ROAD_LENGTH / 2]}>
+    <mesh position={[0, ROAD_Y, ROAD_START_Z - ROAD_LENGTH / 2]} receiveShadow>
       <boxGeometry args={[ROAD_WIDTH, ROAD_THICKNESS, ROAD_LENGTH]} />
       <meshStandardMaterial
         map={marble}
