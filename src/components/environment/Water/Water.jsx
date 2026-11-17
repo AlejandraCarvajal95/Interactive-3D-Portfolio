@@ -49,7 +49,7 @@ export default function Water() {
   const color = useMemo(() => readCssVar('--water-color'), [])
 
   return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, WATER_Y, 0]} receiveShadow>
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, WATER_Y, 0]}>
       <planeGeometry args={[WATER_SIZE, WATER_SIZE]} />
       <meshPhysicalMaterial
         color={color}

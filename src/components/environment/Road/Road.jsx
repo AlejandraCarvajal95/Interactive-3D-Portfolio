@@ -99,16 +99,21 @@ export default function Road() {
   )
 
   return (
-    <mesh position={[0, ROAD_Y, ROAD_START_Z - ROAD_LENGTH / 2]} receiveShadow>
+    <mesh position={[0, ROAD_Y, ROAD_START_Z - ROAD_LENGTH / 2]}>
       <boxGeometry args={[ROAD_WIDTH, ROAD_THICKNESS, ROAD_LENGTH]} />
-      <meshStandardMaterial
+      {/* Solo un toque del brillo del sol, de color rosado. La carretera mira
+          casi de frente al sol, así que su reflejo directo la volvería blanca:
+          specularIntensity lo limita. Más alto = más brillo. */}
+      <meshPhysicalMaterial
         map={marble}
         emissive="#ffffff"
         emissiveMap={marble}
         emissiveIntensity={0.9}
-        roughness={0.6}
+        roughness={0.5}
         metalness={0}
-        envMapIntensity={0.25}
+        specularIntensity={0.25}
+        specularColor="#ff8fc8"
+        envMapIntensity={0.12}
       />
     </mesh>
   )

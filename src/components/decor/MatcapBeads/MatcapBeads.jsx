@@ -16,7 +16,7 @@ export default function MatcapBeads() {
           speed={0.8 + ((i * 17) % 7) / 10}
           phase={i * 2.1}
         >
-          <mesh scale={radius} castShadow>
+          <mesh scale={radius}>
             <sphereGeometry args={[1, 24, 24]} />
             <MatcapMaterial />
           </mesh>

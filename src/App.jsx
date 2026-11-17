@@ -8,6 +8,7 @@ import PortfolioTitle from './components/decor/PortfolioTitle/PortfolioTitle.jsx
 import Fog from './components/environment/Fog/Fog.jsx'
 import Road from './components/environment/Road/Road.jsx'
 import Sky from './components/environment/Sky/Sky.jsx'
+import ShadowCatcher from './components/environment/ShadowCatcher/ShadowCatcher.jsx'
 import SkyDome from './components/environment/SkyDome/SkyDome.jsx'
 import SkyReflection from './components/environment/SkyReflection/SkyReflection.jsx'
 import SunDisc from './components/environment/SunDisc/SunDisc.jsx'
@@ -42,11 +43,17 @@ export default function App() {
       <Sky />
       <KeyboardControls map={KEYBOARD_MAP}>
         <Canvas
-          shadows="percentage"
+          shadows="variance"
           // dpr limita la resolución interna: en pantallas de alta densidad
-          // (4K, retina) no se renderiza más de 2 píxeles por píxel de CSS.
-          dpr={[1, 2]}
-          gl={{ antialias: true }}
+          // (4K, retina) no se renderiza más de 1.5 píxeles por píxel de CSS.
+          dpr={[1, 1.5]}
+          gl={{ antialias: true, powerPreference: 'high-performance' }}
+          // El cristal de los paneles dibuja la escena a una textura para
+          // refractarla; a la mitad de resolución cuesta una cuarta parte y,
+          // como el cristal es difuso, casi no se nota.
+          onCreated={({ gl }) => {
+            gl.transmissionResolutionScale = 0.5
+          }}
           camera={{ position: CAMERA_POSITION, fov: 60, near: 0.1, far: 1000 }}
         >
           {IS_DEBUG && <DebugControls target={CAMERA_TARGET} />}
@@ -60,6 +67,7 @@ export default function App() {
             <SkyReflection />
           </Suspense>
           <Water />
+          <ShadowCatcher />
           <Road />
           <MiniCities />
           <Suspense fallback={null}>

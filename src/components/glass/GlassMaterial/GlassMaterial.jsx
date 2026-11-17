@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { AdditiveBlending } from 'three'
 import { readCssVar } from '../../../utils/cssVar.js'
 import './GlassMaterial.css'
 
@@ -8,8 +9,10 @@ import './GlassMaterial.css'
 //         difumina un poco, `thickness` e `ior` desvían la imagen y dan el
 //         borde brillante. `iridescence` agrega el arcoíris sutil y
 //         `clearcoat` el brillo pulido de la superficie.
-// bubble: burbuja. Transparente y sin nada de rugosidad; casi todo su aspecto
-//         viene de reflejar el cielo y de la iridiscencia.
+// bubble: burbuja. Transparente (sin `transmission`) y sin nada de rugosidad;
+//         casi todo su aspecto viene de reflejar el cielo y de la iridiscencia.
+//         No usa `transmission` a propósito: cada material con transmisión
+//         obliga a dibujar la escena otra vez, y son muchas burbujas.
 const VARIANTS = {
   panel: {
     transmission: 0.95,
@@ -25,10 +28,13 @@ const VARIANTS = {
     envMapIntensity: 2,
   },
   bubble: {
-    transmission: 1,
+    // Mezcla aditiva con color negro: no tiene relleno, solo suma el brillo de
+    // los reflejos y la iridiscencia, como el borde de una burbuja.
+    color: '#000000',
+    transparent: true,
+    blending: AdditiveBlending,
+    depthWrite: false,
     roughness: 0,
-    thickness: 0.4,
-    ior: 1.2,
     iridescence: 1,
     iridescenceIOR: 1.4,
     iridescenceThicknessMinimum: 150,
