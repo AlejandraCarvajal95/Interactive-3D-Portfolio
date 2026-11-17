@@ -10,6 +10,8 @@ import {
   FRAME_Y,
   FRAME_Z_OFFSET,
   NAV_MIN_Z,
+  TITLE_HALF_WIDTH,
+  TITLE_POSITION,
 } from '../constants.js'
 import { createRandom } from '../utils/random.js'
 import { PROJECTS, sideSign } from './projects.js'
@@ -24,22 +26,19 @@ const FAR_Z = NAV_MIN_Z // hasta donde llega el recorrido
 
 const CITY_RADIUS = CITY_SCALE * 10 // radio de la plataforma de cada ciudad
 const CITY_MAX_Y = 8 // por debajo de esta altura no se pone nada sobre una ciudad
-const TITLE = { x: 7, y: 7.2, z: -12, halfHeight: 2.5, halfDepth: 2.5 }
+const TITLE = { halfHeight: 2.5, halfDepth: 2.5 }
 
-// Zona que ocupa cada panel, para no poner nada dentro.
-const PANEL_ZONES = PROJECTS.map(({ side, z }) => ({
-  sign: sideSign(side),
-  z: z + FRAME_Z_OFFSET,
-}))
+// Centro de cada panel, para no poner nada dentro.
+const PANEL_CENTERS = PROJECTS.map(({ side, z }) => [
+  sideSign(side) * FRAME_X,
+  z + FRAME_Z_OFFSET,
+])
 
 function overlapsPanel(x, y, z, radius) {
-  return PANEL_ZONES.some(
-    (zone) =>
-      Math.sign(x) === zone.sign &&
-      Math.abs(x) > FRAME_X - FRAME_WIDTH / 2 - radius &&
-      Math.abs(z - zone.z) < FRAME_WIDTH / 2 + radius &&
-      y < FRAME_Y + FRAME_HEIGHT / 2 + radius &&
-      y > FRAME_Y - FRAME_HEIGHT / 2 - radius,
+  return PANEL_CENTERS.some(
+    ([px, pz]) =>
+      Math.hypot(x - px, z - pz) < FRAME_WIDTH / 2 + radius &&
+      Math.abs(y - FRAME_Y) < FRAME_HEIGHT / 2 + radius,
   )
 }
 
@@ -53,9 +52,9 @@ function overlapsCity(x, y, z, radius) {
 
 function overlapsTitle(x, y, z, radius) {
   return (
-    Math.abs(x) < TITLE.x + radius &&
-    Math.abs(y - TITLE.y) < TITLE.halfHeight + radius &&
-    Math.abs(z - TITLE.z) < TITLE.halfDepth + radius
+    Math.abs(x - TITLE_POSITION[0]) < TITLE_HALF_WIDTH + radius &&
+    Math.abs(y - TITLE_POSITION[1]) < TITLE.halfHeight + radius &&
+    Math.abs(z - TITLE_POSITION[2]) < TITLE.halfDepth + radius
   )
 }
 
