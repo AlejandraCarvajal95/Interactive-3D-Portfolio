@@ -4,7 +4,6 @@
   --frame-info-accent: #ff44cc;
 }
 
-.frame-hint,
 .frame-card {
   font-family: 'Poppins', system-ui, sans-serif;
   color: var(--frame-info-text);
@@ -14,15 +13,20 @@
   white-space: nowrap;
 }
 
-.frame-hint {
-  padding: 6px 14px;
-  font-size: 14px;
-}
-
 .frame-card {
   padding: 16px 20px;
   max-width: 300px;
   white-space: normal;
+  /* Entra con un fundido que espera un instante: así no se ve el primer cuadro,
+     cuando Html todavía no calculó su posición. */
+  animation: frame-card-in 0.2s ease-out 0.08s both;
+}
+
+@keyframes frame-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
 }
 
 .frame-card h3 {

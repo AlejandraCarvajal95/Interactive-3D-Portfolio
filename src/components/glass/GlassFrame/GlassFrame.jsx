@@ -74,10 +74,20 @@ export default function GlassFrame({ id, name, description, active = false }) {
         >
           {name}
         </Text>
+        <Text
+          font={FONT_FILE}
+          fontSize={0.2}
+          anchorX="center"
+          anchorY="middle"
+          position={[0, -0.75, FRAME_DEPTH / 2 + 0.02]}
+          color={textColor}
+          visible={highlighted && !opened}
+        >
+          Clic para ver más
+        </Text>
         <FrameInfo
           name={name}
           description={description}
-          hovered={highlighted}
           opened={opened}
           onClose={() => setOpened(false)}
         />
