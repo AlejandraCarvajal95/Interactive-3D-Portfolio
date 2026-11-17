@@ -7,6 +7,7 @@ import GlassBubbles from './components/glass/GlassBubbles.jsx'
 import GlassFrames from './components/glass/GlassFrames.jsx'
 import MatcapBeads from './components/MatcapBeads.jsx'
 import MiniCities from './components/mini-cities/MiniCities.jsx'
+import PortfolioTitle from './components/PortfolioTitle.jsx'
 import Sky from './components/Sky.jsx'
 import Road from './components/Road.jsx'
 import SkyReflection from './components/SkyReflection.jsx'
@@ -43,6 +44,7 @@ export default function App() {
           <GlassFrames />
           <GlassBubbles />
           <MatcapBeads />
+          <PortfolioTitle />
         </Suspense>
       </Canvas>
     </div>
