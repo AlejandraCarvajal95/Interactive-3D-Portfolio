@@ -3,6 +3,9 @@ import { Canvas } from '@react-three/fiber'
 import CameraTarget from './components/CameraTarget.jsx'
 import DebugControls from './components/DebugControls.jsx'
 import Fog from './components/Fog.jsx'
+import GlassBubbles from './components/glass/GlassBubbles.jsx'
+import GlassFrames from './components/glass/GlassFrames.jsx'
+import MatcapBeads from './components/MatcapBeads.jsx'
 import MiniCities from './components/mini-cities/MiniCities.jsx'
 import Sky from './components/Sky.jsx'
 import Road from './components/Road.jsx'
@@ -36,6 +39,11 @@ export default function App() {
         <Water />
         <Road />
         <MiniCities />
+        <Suspense fallback={null}>
+          <GlassFrames />
+          <GlassBubbles />
+          <MatcapBeads />
+        </Suspense>
       </Canvas>
     </div>
   )
