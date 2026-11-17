@@ -35,6 +35,39 @@ Después abre la URL que aparece en la terminal (normalmente `http://localhost:5
 | `npm run preview` | Muestra localmente la versión de producción |
 | `npm run lint` | Revisa el código con ESLint |
 
+## Estructura del código
+
+Cada componente tiene su propia carpeta con su `.jsx` y su `.css`, agrupados por tema:
+
+```
+src/
+├── App.jsx, App.css        Escena principal
+├── constants.js            Medidas compartidas (carretera, agua, paneles, navegación)
+├── components/
+│   ├── common/             Piezas reutilizables: Primitive, Floating, MatcapMaterial, DebugControls
+│   ├── decor/              Decoración: título 3D y cuentas matcap
+│   ├── environment/        Entorno: Sky, SkyReflection, Water, Fog, Road
+│   ├── glass/              Cristal: paneles, burbujas y su material
+│   ├── lights/             Luces: SunLight, SoftAmbient
+│   ├── mini-cities/        Las mini-ciudades de cada proyecto
+│   └── physics/            Física (Rapier): colliders, sensores y el visitante
+├── data/                   Datos: proyectos, piezas de las ciudades, burbujas, teclas
+├── hooks/                  Hooks propios (entrada de navegación)
+└── utils/                  Utilidades (variables CSS, modos de revisión, aleatorio)
+```
+
+Los colores se definen como variables en el CSS de cada componente y se leen con `readCssVar`.
+
+## Modos de revisión
+
+Se activan con banderas en la URL y se pueden combinar (por ejemplo `/?stats&physics`):
+
+| Bandera | Qué hace |
+|---|---|
+| `?debug` | Cámara libre y helpers de la luz |
+| `?stats` | Panel de FPS |
+| `?physics` | Muestra los colliders de la física |
+
 ## Ramas y despliegue
 
 - `main`: rama de producción. Cada push se despliega automáticamente en Vercel.
