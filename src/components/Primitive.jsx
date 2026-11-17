@@ -12,7 +12,13 @@ export default function Primitive({
   scale = [1, 1, 1],
 }) {
   return (
-    <mesh position={position} rotation={rotation} scale={scale}>
+    <mesh
+      position={position}
+      rotation={rotation}
+      scale={scale}
+      castShadow
+      receiveShadow
+    >
       {GEOMETRIES[shape]}
       <meshStandardMaterial color={color} roughness={0.4} metalness={0.1} />
     </mesh>
