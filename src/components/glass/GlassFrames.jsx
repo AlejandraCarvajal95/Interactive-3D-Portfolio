@@ -12,7 +12,7 @@ import GlassFrame from './GlassFrame.jsx'
 // por la carretera, para que la ciudad se vea de frente. Se gira hacia la
 // carretera: el de la izquierda hacia +X y el de la derecha hacia -X. Flotan
 // muy suavemente.
-export default function GlassFrames() {
+export default function GlassFrames({ activeId }) {
   return (
     <group name="glass-frames">
       {PROJECTS.map(({ id, name, description, side, z }, i) => {
@@ -26,7 +26,12 @@ export default function GlassFrames() {
             speed={0.7}
             phase={i * 2}
           >
-            <GlassFrame id={id} name={name} description={description} />
+            <GlassFrame
+              id={id}
+              name={name}
+              description={description}
+              active={activeId === id}
+            />
           </Floating>
         )
       })}

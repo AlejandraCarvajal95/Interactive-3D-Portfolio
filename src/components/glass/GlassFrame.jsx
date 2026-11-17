@@ -16,10 +16,13 @@ const SCALE_SPEED = 8 // qué tan rápido crece al pasar el cursor
 // Muestra el nombre del proyecto, crece al pasar el cursor y, al hacer clic,
 // abre una tarjeta con la descripción. Quien lo coloca (Floating) le da la
 // posición y la rotación.
-export default function GlassFrame({ id, name, description }) {
+export default function GlassFrame({ id, name, description, active = false }) {
   const [hovered, setHovered] = useState(false)
   const [opened, setOpened] = useState(false)
   const scaleRef = useRef(null)
+  // Resaltado: con el cursor encima o cuando el visitante llegó a su estación
+  // (lo detecta el sensor de física).
+  const highlighted = hovered || active
   const textColor = useMemo(() => readCssVar('--frame-text-color'), [])
 
   // Cambia el cursor a "pointer" mientras el puntero está sobre el panel.
@@ -27,7 +30,7 @@ export default function GlassFrame({ id, name, description }) {
 
   // Crece o encoge con suavizado. damp es un lerp independiente de los FPS.
   useFrame((_, delta) => {
-    const target = hovered ? HOVER_SCALE : 1
+    const target = highlighted ? HOVER_SCALE : 1
     const scale = MathUtils.damp(scaleRef.current.scale.x, target, SCALE_SPEED, delta)
     scaleRef.current.scale.setScalar(scale)
   })
@@ -74,7 +77,7 @@ export default function GlassFrame({ id, name, description }) {
         <FrameInfo
           name={name}
           description={description}
-          hovered={hovered}
+          hovered={highlighted}
           opened={opened}
           onClose={() => setOpened(false)}
         />
