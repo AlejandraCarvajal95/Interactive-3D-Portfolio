@@ -7,16 +7,22 @@ import {
   EYE_HEIGHT,
   JUMP_IMPULSE,
   LOOK_AHEAD,
+  LOOK_DEAD_ZONE,
   LOOK_DROP,
   LOOK_MAX_X,
   LOOK_MAX_Y,
   LOOK_SMOOTHING,
   NAV_ACCEL,
+  NAV_EDGE_MARGIN,
+  NAV_MAX_DELTA,
+  NAV_MAX_Z,
+  NAV_MIN_Z,
   NAV_SMOOTHING,
   NAV_SPEED,
   NAV_START_Z,
   NAV_STRAFE_SPEED,
   ROAD_THICKNESS,
+  ROAD_WIDTH,
   ROAD_Y,
   WALKER_HALF_HEIGHT,
   WALKER_RADIUS,
@@ -27,6 +33,19 @@ import { useNavigationInput } from '../../../hooks/useNavigationInput.js'
 const REST_Y = ROAD_Y + ROAD_THICKNESS / 2 + WALKER_HALF_HEIGHT + WALKER_RADIUS
 // La cámara va por encima del cuerpo, a la altura de los ojos.
 const EYE_OFFSET = EYE_HEIGHT - REST_Y
+
+// Hasta dónde puede llegar el centro del cuerpo antes de detenerse solo, a un
+// margen de las paredes.
+const MIN_Z = NAV_MIN_Z + WALKER_RADIUS + NAV_EDGE_MARGIN
+const MAX_Z = NAV_MAX_Z - WALKER_RADIUS - NAV_EDGE_MARGIN
+const MAX_X = ROAD_WIDTH / 2 - WALKER_RADIUS - NAV_EDGE_MARGIN
+
+// El puntero cerca del centro de la pantalla no desvía la mirada; así la vista
+// no se mueve sola cuando el mouse solo está quieto en la pantalla.
+function withDeadZone(value) {
+  const size = Math.max(0, Math.abs(value) - LOOK_DEAD_ZONE)
+  return (Math.sign(value) * size) / (1 - LOOK_DEAD_ZONE)
+}
 
 // El visitante: un cuerpo físico (RigidBody dinámico) con una cápsula. Las
 // paredes de RoadColliders no lo dejan salir de la carretera. La cámara sigue
@@ -57,9 +76,13 @@ export default function Walker({ followCamera = true }) {
     [subscribeKeys],
   )
 
-  useFrame((state, delta) => {
+  useFrame((state, frameDelta) => {
     const rigidBody = body.current
     if (!rigidBody) return
+
+    // Si el navegador pausó la animación (otra pestaña, un tirón), el tiempo
+    // entre fotogramas puede ser enorme: se limita para que nada salte.
+    const delta = Math.min(frameDelta, NAV_MAX_DELTA)
 
     // 1. Velocidad pedida: teclado + rueda. Avanzar es ir hacia -Z.
     const { forward, strafe, wheel } = readInput(delta)
@@ -69,15 +92,19 @@ export default function Walker({ followCamera = true }) {
     // 2. Se acerca a esa velocidad poco a poco (arranca y frena suave).
     velocity.current.z = MathUtils.damp(velocity.current.z, targetZ, NAV_ACCEL, delta)
     velocity.current.x = MathUtils.damp(velocity.current.x, targetX, NAV_ACCEL, delta)
-    rigidBody.setLinvel(
-      { x: velocity.current.x, y: rigidBody.linvel().y, z: velocity.current.z },
-      true,
-    )
+
+    // 2b. Cerca de un límite se frena solo, en vez de empujar contra la pared
+    // (empujar y rebotar hacía que la cámara temblara).
+    const { x, y, z } = rigidBody.translation()
+    const speed = velocity.current
+    if ((z <= MIN_Z && speed.z < 0) || (z >= MAX_Z && speed.z > 0)) speed.z = 0
+    if ((x <= -MAX_X && speed.x < 0) || (x >= MAX_X && speed.x > 0)) speed.x = 0
+
+    rigidBody.setLinvel({ x: speed.x, y: rigidBody.linvel().y, z: speed.z }, true)
 
     if (!followCamera) return
 
     // 3. La cámara persigue al cuerpo. damp es un lerp independiente de los FPS.
-    const { x, y, z } = rigidBody.translation()
     const { camera, pointer } = state
     camera.position.x = MathUtils.damp(camera.position.x, x, NAV_SMOOTHING, delta)
     camera.position.y = MathUtils.damp(camera.position.y, y + EYE_OFFSET, NAV_SMOOTHING, delta)
@@ -85,10 +112,10 @@ export default function Walker({ followCamera = true }) {
 
     // 4. Mira hacia adelante; el puntero desvía la mirada con un máximo.
     const look = lookAt.current
-    look.x = MathUtils.damp(look.x, x + pointer.x * LOOK_MAX_X, LOOK_SMOOTHING, delta)
+    look.x = MathUtils.damp(look.x, x + withDeadZone(pointer.x) * LOOK_MAX_X, LOOK_SMOOTHING, delta)
     look.y = MathUtils.damp(
       look.y,
-      camera.position.y - LOOK_DROP + pointer.y * LOOK_MAX_Y,
+      camera.position.y - LOOK_DROP + withDeadZone(pointer.y) * LOOK_MAX_Y,
       LOOK_SMOOTHING,
       delta,
     )
@@ -99,7 +126,7 @@ export default function Walker({ followCamera = true }) {
   return (
     <RigidBody
       ref={body}
-      position={[0, REST_Y + 0.1, NAV_START_Z]}
+      position={[0, REST_Y + 0.02, NAV_START_Z]}
       enabledRotations={[false, false, false]}
       colliders={false}
     >

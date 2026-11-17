@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import { useThree } from '@react-three/fiber'
 import { useKeyboardControls } from '@react-three/drei'
 import { MathUtils } from 'three'
+import { KEYBOARD_MAP } from '../data/controls.js'
 import {
   WHEEL_DECAY,
   WHEEL_GAIN,
@@ -46,6 +47,28 @@ export function useNavigationInput() {
     element.addEventListener('wheel', onWheel, { passive: false })
     return () => element.removeEventListener('wheel', onWheel)
   }, [element])
+
+  // Si la ventana pierde el foco con una tecla presionada (cambiar de pestaña,
+  // Alt+Tab), el navegador nunca avisa que se soltó y la cámara seguiría
+  // avanzando sola. Al perder el foco se "sueltan" todas las teclas y se frena
+  // la rueda.
+  useEffect(() => {
+    const releaseAll = () => {
+      wheelSpeed.current = 0
+      KEYBOARD_MAP.forEach(({ keys }) =>
+        keys.forEach((code) =>
+          window.dispatchEvent(new KeyboardEvent('keyup', { code })),
+        ),
+      )
+    }
+    const onVisibility = () => document.hidden && releaseAll()
+    window.addEventListener('blur', releaseAll)
+    document.addEventListener('visibilitychange', onVisibility)
+    return () => {
+      window.removeEventListener('blur', releaseAll)
+      document.removeEventListener('visibilitychange', onVisibility)
+    }
+  }, [])
 
   return useCallback(
     (delta) => {
