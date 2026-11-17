@@ -1,0 +1,5 @@
+:root {
+  /* El título va de azul cian (izquierda) a aguamarina (derecha). */
+  --title-cyan: #00c8ff;
+  --title-aqua: #3df5c4;
+}

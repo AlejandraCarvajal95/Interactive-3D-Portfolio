@@ -1,45 +1,74 @@
 // Burbujas y cuentas decorativas alrededor de la carretera: [x, y, z, radio].
 // Se reparten con una semilla fija (siempre quedan en el mismo sitio), de varios
-// tamaños, y evitando la carretera y los paneles de cristal.
+// tamaños, bien separadas entre sí y evitando la carretera, las mini-ciudades,
+// los paneles de cristal y el título 3D.
 import {
+  CITY_SCALE,
   FRAME_HEIGHT,
   FRAME_WIDTH,
   FRAME_X,
   FRAME_Y,
   FRAME_Z_OFFSET,
+  NAV_MIN_Z,
+  TITLE_HALF_WIDTH,
+  TITLE_POSITION,
 } from '../constants.js'
 import { createRandom } from '../utils/random.js'
 import { PROJECTS, sideSign } from './projects.js'
 
-const MIN_X = 1.9 // lo más cerca del centro de la carretera
-const MAX_X = 5
-const MIN_Y = 0.8
-const MAX_Y = 6
-const NEAR_Z = 2
-const FAR_Z = -62
+// Volumen donde se reparten (ancho a cada lado de la carretera, alto y largo).
+const MIN_X = 2.8 // lo más cerca del centro de la carretera
+const MAX_X = 16
+const MIN_Y = 1
+const MAX_Y = 12
+const NEAR_Z = -2
+const FAR_Z = NAV_MIN_Z // hasta donde llega el recorrido
 
-// Zona que ocupa cada panel, con un margen, para no poner nada dentro.
-const PANEL_ZONES = PROJECTS.map(({ side, z }) => ({
-  sign: sideSign(side),
-  z: z + FRAME_Z_OFFSET,
-}))
+const CITY_RADIUS = CITY_SCALE * 10 // radio de la plataforma de cada ciudad
+const CITY_MAX_Y = 8 // por debajo de esta altura no se pone nada sobre una ciudad
+const TITLE = { halfHeight: 2.5, halfDepth: 2.5 }
+
+// Centro de cada panel, para no poner nada dentro.
+const PANEL_CENTERS = PROJECTS.map(({ side, z }) => [
+  sideSign(side) * FRAME_X,
+  z + FRAME_Z_OFFSET,
+])
 
 function overlapsPanel(x, y, z, radius) {
-  return PANEL_ZONES.some(
-    (zone) =>
-      Math.sign(x) === zone.sign &&
-      Math.abs(x) > FRAME_X - FRAME_WIDTH / 2 - radius &&
-      Math.abs(z - zone.z) < FRAME_WIDTH / 2 + radius &&
-      y < FRAME_Y + FRAME_HEIGHT / 2 + radius &&
-      y > FRAME_Y - FRAME_HEIGHT / 2 - radius,
+  return PANEL_CENTERS.some(
+    ([px, pz]) =>
+      Math.hypot(x - px, z - pz) < FRAME_WIDTH / 2 + radius &&
+      Math.abs(y - FRAME_Y) < FRAME_HEIGHT / 2 + radius,
   )
 }
 
-function scatter({ count, seed, minRadius, maxRadius }) {
+function overlapsCity(x, y, z, radius) {
+  return PROJECTS.some(
+    ({ position }) =>
+      y < CITY_MAX_Y &&
+      Math.hypot(x - position[0], z - position[2]) < CITY_RADIUS + radius + 1,
+  )
+}
+
+function overlapsTitle(x, y, z, radius) {
+  return (
+    Math.abs(x - TITLE_POSITION[0]) < TITLE_HALF_WIDTH + radius &&
+    Math.abs(y - TITLE_POSITION[1]) < TITLE.halfHeight + radius &&
+    Math.abs(z - TITLE_POSITION[2]) < TITLE.halfDepth + radius
+  )
+}
+
+// `placed` guarda todo lo ya colocado (burbujas y cuentas) para mantener una
+// distancia mínima entre centros (`spacing`) y que no queden amontonadas.
+const placed = []
+
+function scatter({ count, seed, minRadius, maxRadius, spacing }) {
   const random = createRandom(seed)
   const items = []
+  let attempts = 0
 
-  while (items.length < count) {
+  while (items.length < count && attempts < 5000) {
+    attempts++
     const side = random() < 0.5 ? -1 : 1
     const x = side * (MIN_X + random() * (MAX_X - MIN_X))
     const y = MIN_Y + random() * (MAX_Y - MIN_Y)
@@ -47,11 +76,38 @@ function scatter({ count, seed, minRadius, maxRadius }) {
     // Elevar al cuadrado deja más burbujas chicas que grandes.
     const radius = minRadius + random() ** 2 * (maxRadius - minRadius)
 
-    if (!overlapsPanel(x, y, z, radius)) items.push([x, y, z, radius])
+    const tooClose = placed.some(
+      ([px, py, pz, pr]) =>
+        Math.hypot(x - px, y - py, z - pz) < spacing + radius + pr,
+    )
+    if (
+      tooClose ||
+      overlapsPanel(x, y, z, radius) ||
+      overlapsCity(x, y, z, radius) ||
+      overlapsTitle(x, y, z, radius)
+    ) {
+      continue
+    }
+
+    const item = [x, y, z, radius]
+    items.push(item)
+    placed.push(item)
   }
 
   return items
 }
 
-export const ORBS = scatter({ count: 30, seed: 11, minRadius: 0.12, maxRadius: 0.8 })
-export const BEADS = scatter({ count: 10, seed: 23, minRadius: 0.08, maxRadius: 0.16 })
+export const ORBS = scatter({
+  count: 30,
+  seed: 11,
+  minRadius: 0.12,
+  maxRadius: 0.8,
+  spacing: 5,
+})
+export const BEADS = scatter({
+  count: 10,
+  seed: 23,
+  minRadius: 0.08,
+  maxRadius: 0.16,
+  spacing: 4,
+})

@@ -17,3 +17,12 @@ body {
   width: 100vw;
   height: 100vh;
 }
+
+/* Fuente de la interfaz 2D (tarjeta de ayuda y tarjetas de los paneles). Es la
+   misma que usa el texto 3D y está en public/fonts para funcionar sin internet. */
+@font-face {
+  font-family: 'Poppins';
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/poppins-600.woff') format('woff');
+}

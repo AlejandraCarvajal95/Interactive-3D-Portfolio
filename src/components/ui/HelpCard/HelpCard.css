@@ -1,0 +1,89 @@
+:root {
+  --help-bg: rgba(255, 255, 255, 0.78);
+  --help-text: #2a1a5e;
+  --help-muted: #6b5a99;
+  --help-accent: #ff44cc;
+  --help-key-bg: #ffffff;
+  --help-key-border: #c9b8ff;
+}
+
+.help-card {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: min(280px, calc(100vw - 32px));
+  padding: 14px 16px;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--help-text);
+  background: var(--help-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(42, 26, 94, 0.25);
+}
+
+.help-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.help-card__title {
+  font-size: 14px;
+}
+
+.help-card__toggle {
+  font: inherit;
+  font-size: 12px;
+  padding: 3px 10px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--help-accent);
+  cursor: pointer;
+}
+
+.help-card__list {
+  margin-top: 10px;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.help-card__item {
+  display: grid;
+  gap: 2px;
+}
+
+.help-card__label {
+  font-size: 11px;
+  color: var(--help-muted);
+}
+
+.help-card__keys {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.help-card kbd {
+  min-width: 24px;
+  padding: 2px 7px;
+  font: inherit;
+  font-size: 12px;
+  text-align: center;
+  background: var(--help-key-bg);
+  border: 1px solid var(--help-key-border);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+}
+
+.help-card__or {
+  font-size: 11px;
+  color: var(--help-muted);
+}

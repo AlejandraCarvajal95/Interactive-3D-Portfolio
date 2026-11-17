@@ -1,0 +1,9 @@
+:root {
+  --sky-color: var(--sky-horizon);
+}
+
+.sky {
+  position: absolute;
+  inset: 0;
+  background: var(--sky-color);
+}

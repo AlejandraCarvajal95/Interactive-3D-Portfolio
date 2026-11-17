@@ -3,7 +3,9 @@
 export const KEYBOARD_MAP = [
   { name: 'forward', keys: ['ArrowUp', 'KeyW'] },
   { name: 'backward', keys: ['ArrowDown', 'KeyS'] },
-  { name: 'left', keys: ['ArrowLeft', 'KeyA'] },
-  { name: 'right', keys: ['ArrowRight', 'KeyD'] },
+  { name: 'left', keys: ['KeyA'] },
+  { name: 'right', keys: ['KeyD'] },
+  { name: 'turnLeft', keys: ['KeyQ', 'ArrowLeft'] },
+  { name: 'turnRight', keys: ['KeyE', 'ArrowRight'] },
   { name: 'jump', keys: ['Space'] },
 ]

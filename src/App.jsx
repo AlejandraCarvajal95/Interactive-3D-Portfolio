@@ -2,22 +2,26 @@ import { Suspense, useCallback, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { KeyboardControls, Stats } from '@react-three/drei'
 import { Physics } from '@react-three/rapier'
-import DebugControls from './components/DebugControls.jsx'
-import Fog from './components/Fog.jsx'
-import GlassBubbles from './components/glass/GlassBubbles.jsx'
-import GlassFrames from './components/glass/GlassFrames.jsx'
-import MatcapBeads from './components/MatcapBeads.jsx'
-import MiniCities from './components/mini-cities/MiniCities.jsx'
-import PortfolioTitle from './components/PortfolioTitle.jsx'
-import RoadColliders from './components/physics/RoadColliders.jsx'
-import StationSensors from './components/physics/StationSensors.jsx'
-import Walker from './components/physics/Walker.jsx'
-import Sky from './components/Sky.jsx'
-import Road from './components/Road.jsx'
-import SkyReflection from './components/SkyReflection.jsx'
-import SoftAmbient from './components/lights/SoftAmbient.jsx'
-import SunLight from './components/lights/SunLight.jsx'
-import Water from './components/Water.jsx'
+import DebugControls from './components/common/DebugControls/DebugControls.jsx'
+import MatcapBeads from './components/decor/MatcapBeads/MatcapBeads.jsx'
+import PortfolioTitle from './components/decor/PortfolioTitle/PortfolioTitle.jsx'
+import Fog from './components/environment/Fog/Fog.jsx'
+import Road from './components/environment/Road/Road.jsx'
+import Sky from './components/environment/Sky/Sky.jsx'
+import ShadowCatcher from './components/environment/ShadowCatcher/ShadowCatcher.jsx'
+import SkyDome from './components/environment/SkyDome/SkyDome.jsx'
+import SkyReflection from './components/environment/SkyReflection/SkyReflection.jsx'
+import SunDisc from './components/environment/SunDisc/SunDisc.jsx'
+import Water from './components/environment/Water/Water.jsx'
+import GlassBubbles from './components/glass/GlassBubbles/GlassBubbles.jsx'
+import GlassFrames from './components/glass/GlassFrames/GlassFrames.jsx'
+import SoftAmbient from './components/lights/SoftAmbient/SoftAmbient.jsx'
+import SunLight from './components/lights/SunLight/SunLight.jsx'
+import MiniCities from './components/mini-cities/MiniCities/MiniCities.jsx'
+import RoadColliders from './components/physics/RoadColliders/RoadColliders.jsx'
+import StationSensors from './components/physics/StationSensors/StationSensors.jsx'
+import Walker from './components/physics/Walker/Walker.jsx'
+import HelpCard from './components/ui/HelpCard/HelpCard.jsx'
 import { KEYBOARD_MAP } from './data/controls.js'
 import { IS_DEBUG, SHOW_PHYSICS, SHOW_STATS } from './utils/debug.js'
 import './App.css'
@@ -39,22 +43,31 @@ export default function App() {
       <Sky />
       <KeyboardControls map={KEYBOARD_MAP}>
         <Canvas
-          shadows="percentage"
+          shadows="variance"
           // dpr limita la resolución interna: en pantallas de alta densidad
-          // (4K, retina) no se renderiza más de 2 píxeles por píxel de CSS.
-          dpr={[1, 2]}
-          gl={{ antialias: true }}
+          // (4K, retina) no se renderiza más de 1.5 píxeles por píxel de CSS.
+          dpr={[1, 1.5]}
+          gl={{ antialias: true, powerPreference: 'high-performance' }}
+          // El cristal de los paneles dibuja la escena a una textura para
+          // refractarla; a la mitad de resolución cuesta una cuarta parte y,
+          // como el cristal es difuso, casi no se nota.
+          onCreated={({ gl }) => {
+            gl.transmissionResolutionScale = 0.5
+          }}
           camera={{ position: CAMERA_POSITION, fov: 60, near: 0.1, far: 1000 }}
         >
           {IS_DEBUG && <DebugControls target={CAMERA_TARGET} />}
           {SHOW_STATS && <Stats />}
           <Fog />
+          <SkyDome />
+          <SunDisc />
           <SunLight />
           <SoftAmbient />
           <Suspense fallback={null}>
             <SkyReflection />
           </Suspense>
           <Water />
+          <ShadowCatcher />
           <Road />
           <MiniCities />
           <Suspense fallback={null}>
@@ -73,6 +86,7 @@ export default function App() {
           </Suspense>
         </Canvas>
       </KeyboardControls>
+      <HelpCard />
     </div>
   )
 }
