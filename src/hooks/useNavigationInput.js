@@ -15,6 +15,9 @@ import {
 // useFrame, y entrega:
 //   forward: -1, 0 o 1 según W/S
 //   strafe:  -1, 0 o 1 según A/D
+//   turn:    -1, 0 o 1 según Q/E o las flechas laterales
+//   dragX, dragY: píxeles arrastrados con el clic presionado desde la lectura
+//            anterior (para girar la vista con el mouse o el touchpad)
 //   wheel:   velocidad hacia adelante que dejó la rueda (negativa = atrás)
 //
 // El teclado se lee con get() en lugar de useState: así no hay re-renders por
@@ -23,6 +26,37 @@ export function useNavigationInput() {
   const [, getKeys] = useKeyboardControls()
   const element = useThree((state) => state.gl.domElement)
   const wheelSpeed = useRef(0)
+  const drag = useRef({ active: false, moved: 0, x: 0, y: 0 })
+
+  // Arrastrar con el clic presionado gira la vista. Se ignoran los primeros
+  // píxeles para que un clic normal (por ejemplo en un panel) no gire nada.
+  useEffect(() => {
+    const onDown = () => {
+      drag.current.active = true
+      drag.current.moved = 0
+    }
+    const onMove = (event) => {
+      const state = drag.current
+      if (!state.active) return
+      state.moved += Math.abs(event.movementX) + Math.abs(event.movementY)
+      if (state.moved < 4) return
+      state.x += event.movementX
+      state.y += event.movementY
+    }
+    const onUp = () => {
+      drag.current.active = false
+    }
+    element.addEventListener('pointerdown', onDown)
+    window.addEventListener('pointermove', onMove)
+    window.addEventListener('pointerup', onUp)
+    window.addEventListener('pointercancel', onUp)
+    return () => {
+      element.removeEventListener('pointerdown', onDown)
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('pointerup', onUp)
+      window.removeEventListener('pointercancel', onUp)
+    }
+  }, [element])
 
   useEffect(() => {
     const onWheel = (event) => {
@@ -55,6 +89,7 @@ export function useNavigationInput() {
   useEffect(() => {
     const releaseAll = () => {
       wheelSpeed.current = 0
+      drag.current.active = false
       KEYBOARD_MAP.forEach(({ keys }) =>
         keys.forEach((code) =>
           window.dispatchEvent(new KeyboardEvent('keyup', { code })),
@@ -72,12 +107,19 @@ export function useNavigationInput() {
 
   return useCallback(
     (delta) => {
-      const { forward, backward, left, right } = getKeys()
+      const { forward, backward, left, right, turnLeft, turnRight } = getKeys()
       // La rueda da un impulso que se va frenando solo.
       wheelSpeed.current = MathUtils.damp(wheelSpeed.current, 0, WHEEL_DECAY, delta)
+      // El arrastre se entrega una vez y se vacía.
+      const { x: dragX, y: dragY } = drag.current
+      drag.current.x = 0
+      drag.current.y = 0
       return {
         forward: Number(forward) - Number(backward),
         strafe: Number(right) - Number(left),
+        turn: Number(turnRight) - Number(turnLeft),
+        dragX,
+        dragY,
         wheel: wheelSpeed.current,
       }
     },

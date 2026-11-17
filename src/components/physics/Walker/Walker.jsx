@@ -2,16 +2,14 @@ import { useEffect, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useKeyboardControls } from '@react-three/drei'
 import { CapsuleCollider, RigidBody } from '@react-three/rapier'
-import { MathUtils, Vector3 } from 'three'
+import { MathUtils } from 'three'
 import {
   EYE_HEIGHT,
   JUMP_IMPULSE,
-  LOOK_AHEAD,
-  LOOK_DEAD_ZONE,
-  LOOK_DROP,
-  LOOK_MAX_X,
-  LOOK_MAX_Y,
+  DRAG_SENSITIVITY,
+  LOOK_MAX_PITCH,
   LOOK_SMOOTHING,
+  LOOK_START_PITCH,
   NAV_ACCEL,
   NAV_EDGE_MARGIN,
   NAV_MAX_DELTA,
@@ -24,6 +22,7 @@ import {
   ROAD_THICKNESS,
   ROAD_WIDTH,
   ROAD_Y,
+  TURN_SPEED,
   WALKER_HALF_HEIGHT,
   WALKER_RADIUS,
 } from '../../../constants.js'
@@ -40,13 +39,6 @@ const MIN_Z = NAV_MIN_Z + WALKER_RADIUS + NAV_EDGE_MARGIN
 const MAX_Z = NAV_MAX_Z - WALKER_RADIUS - NAV_EDGE_MARGIN
 const MAX_X = ROAD_WIDTH / 2 - WALKER_RADIUS - NAV_EDGE_MARGIN
 
-// El puntero cerca del centro de la pantalla no desvía la mirada; así la vista
-// no se mueve sola cuando el mouse solo está quieto en la pantalla.
-function withDeadZone(value) {
-  const size = Math.max(0, Math.abs(value) - LOOK_DEAD_ZONE)
-  return (Math.sign(value) * size) / (1 - LOOK_DEAD_ZONE)
-}
-
 // El visitante: un cuerpo físico (RigidBody dinámico) con una cápsula. Las
 // paredes de RoadColliders no lo dejan salir de la carretera. La cámara sigue
 // al cuerpo con suavizado (lerp).
@@ -56,7 +48,11 @@ function withDeadZone(value) {
 export default function Walker({ followCamera = true }) {
   const body = useRef(null)
   const velocity = useRef({ x: 0, z: 0 })
-  const lookAt = useRef(new Vector3(0, EYE_HEIGHT - LOOK_DROP, NAV_START_Z - LOOK_AHEAD))
+  // Hacia dónde se mira: giro a los lados (yaw) e inclinación (pitch), en
+  // radianes. `view` es el giro que muestra la cámara; sigue a `look` con
+  // suavizado.
+  const look = useRef({ yaw: 0, pitch: LOOK_START_PITCH })
+  const view = useRef({ yaw: 0, pitch: LOOK_START_PITCH })
   const readInput = useNavigationInput()
   const [subscribeKeys] = useKeyboardControls()
 
@@ -84,16 +80,28 @@ export default function Walker({ followCamera = true }) {
     // entre fotogramas puede ser enorme: se limita para que nada salte.
     const delta = Math.min(frameDelta, NAV_MAX_DELTA)
 
-    // 1. Velocidad pedida: teclado + rueda. Avanzar es ir hacia -Z.
-    const { forward, strafe, wheel } = readInput(delta)
-    const targetZ = -(forward * NAV_SPEED + wheel)
-    const targetX = strafe * NAV_STRAFE_SPEED
+    // 1. Giro: Q/E o flechas laterales, y arrastre con el clic presionado.
+    const { forward, strafe, turn, dragX, dragY, wheel } = readInput(delta)
+    look.current.yaw -= turn * TURN_SPEED * delta + dragX * DRAG_SENSITIVITY
+    look.current.pitch = MathUtils.clamp(
+      look.current.pitch - dragY * DRAG_SENSITIVITY,
+      -LOOK_MAX_PITCH,
+      LOOK_MAX_PITCH,
+    )
 
-    // 2. Se acerca a esa velocidad poco a poco (arranca y frena suave).
+    // 2. Velocidad pedida según hacia dónde se mira: W/S y la rueda van al
+    // frente, A/D de lado. Mirando al frente, "adelante" es -Z.
+    const { yaw } = look.current
+    const ahead = forward * NAV_SPEED + wheel
+    const side = strafe * NAV_STRAFE_SPEED
+    const targetX = -Math.sin(yaw) * ahead + Math.cos(yaw) * side
+    const targetZ = -Math.cos(yaw) * ahead - Math.sin(yaw) * side
+
+    // 3. Se acerca a esa velocidad poco a poco (arranca y frena suave).
     velocity.current.z = MathUtils.damp(velocity.current.z, targetZ, NAV_ACCEL, delta)
     velocity.current.x = MathUtils.damp(velocity.current.x, targetX, NAV_ACCEL, delta)
 
-    // 2b. Cerca de un límite se frena solo, en vez de empujar contra la pared
+    // 3b. Cerca de un límite se frena solo, en vez de empujar contra la pared
     // (empujar y rebotar hacía que la cámara temblara).
     const { x, y, z } = rigidBody.translation()
     const speed = velocity.current
@@ -104,23 +112,18 @@ export default function Walker({ followCamera = true }) {
 
     if (!followCamera) return
 
-    // 3. La cámara persigue al cuerpo. damp es un lerp independiente de los FPS.
-    const { camera, pointer } = state
+    // 4. La cámara persigue al cuerpo. damp es un lerp independiente de los FPS.
+    const { camera } = state
     camera.position.x = MathUtils.damp(camera.position.x, x, NAV_SMOOTHING, delta)
     camera.position.y = MathUtils.damp(camera.position.y, y + EYE_OFFSET, NAV_SMOOTHING, delta)
     camera.position.z = MathUtils.damp(camera.position.z, z, NAV_SMOOTHING, delta)
 
-    // 4. Mira hacia adelante; el puntero desvía la mirada con un máximo.
-    const look = lookAt.current
-    look.x = MathUtils.damp(look.x, x + withDeadZone(pointer.x) * LOOK_MAX_X, LOOK_SMOOTHING, delta)
-    look.y = MathUtils.damp(
-      look.y,
-      camera.position.y - LOOK_DROP + withDeadZone(pointer.y) * LOOK_MAX_Y,
-      LOOK_SMOOTHING,
-      delta,
-    )
-    look.z = camera.position.z - LOOK_AHEAD
-    camera.lookAt(look)
+    // 5. La vista sigue el giro pedido, con suavizado. El orden 'YXZ' gira
+    // primero a los lados y después inclina, como una cabeza.
+    const shown = view.current
+    shown.yaw = MathUtils.damp(shown.yaw, look.current.yaw, LOOK_SMOOTHING, delta)
+    shown.pitch = MathUtils.damp(shown.pitch, look.current.pitch, LOOK_SMOOTHING, delta)
+    camera.rotation.set(shown.pitch, shown.yaw, 0, 'YXZ')
   })
 
   return (

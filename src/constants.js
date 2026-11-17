@@ -55,18 +55,17 @@ export const WHEEL_MAX_SPEED = 10
 export const WHEEL_DECAY = 3.5 // qué tan rápido se frena el impulso de la rueda
 export const JUMP_IMPULSE = 2.5
 
-// Cámara: sigue al cuerpo con suavizado (lerp) y mira hacia adelante; el
-// puntero la desvía un poco, con un ángulo máximo.
+// Cámara: sigue al cuerpo con suavizado (lerp). La mirada se gira con Q/E,
+// las flechas laterales o arrastrando con el clic presionado.
 export const WALKER_RADIUS = 0.4
 export const WALKER_HALF_HEIGHT = 0.4 // mitad de la parte recta de la cápsula
 export const EYE_HEIGHT = 3.5 // altura de la cámara sobre el agua, en reposo
 export const NAV_SMOOTHING = 5 // más alto = la cámara sigue más rápido
-export const LOOK_AHEAD = 30 // a qué distancia delante mira la cámara
-export const LOOK_DROP = 2.2 // cuánto más abajo que la cámara mira
-export const LOOK_MAX_X = 6 // desvío horizontal máximo de la mirada
-export const LOOK_MAX_Y = 2 // desvío vertical máximo de la mirada
-export const LOOK_DEAD_ZONE = 0.15 // zona central del puntero que no desvía la mirada
-export const LOOK_SMOOTHING = 4
+export const LOOK_START_PITCH = -0.07 // inclinación inicial (radianes, un poco hacia abajo)
+export const LOOK_MAX_PITCH = 0.9 // cuánto se puede mirar hacia arriba o abajo (radianes)
+export const TURN_SPEED = 1.8 // giro con teclas, en radianes por segundo
+export const DRAG_SENSITIVITY = 0.004 // giro por cada píxel arrastrado
+export const LOOK_SMOOTHING = 12 // más alto = la vista sigue el giro más rápido
 
 // Estación: zona a lo largo de la carretera donde "llegas" a un proyecto.
 export const STATION_HALF_LENGTH = 7
