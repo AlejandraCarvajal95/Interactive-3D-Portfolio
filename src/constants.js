@@ -59,3 +59,12 @@ export const LOOK_SMOOTHING = 4
 
 // Estación: zona a lo largo de la carretera donde "llegas" a un proyecto.
 export const STATION_HALF_LENGTH = 5
+
+// Cielo y sol visible (estética sunset). El sol es un disco con franjas, lejos
+// en el horizonte y con su parte baja escondida bajo el agua.
+export const SKY_RADIUS = 800
+export const SUN_DISC_Z = -220
+export const SUN_DISC_RADIUS = 40
+// Altura del centro del disco sobre el agua. Con 0.45 del radio, su parte de
+// abajo (la de las franjas) queda en parte tapada por el agua.
+export const SUN_DISC_Y = SUN_DISC_RADIUS * 0.45
