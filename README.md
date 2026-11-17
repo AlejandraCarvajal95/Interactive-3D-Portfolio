@@ -14,10 +14,10 @@ Se despliega automáticamente en Vercel con cada push a `main`.
 
 | Acción | Mouse y teclado | Touchpad |
 |---|---|---|
-| Avanzar y retroceder | `W` `S`, `↑` `↓` o la rueda del mouse | Deslizar dos dedos |
-| Moverte a los lados | `A` `D` o `←` `→` | `A` `D` o `←` `→` |
+| Avanzar y retroceder (hacia donde miras) | `W` `S`, `↑` `↓` o la rueda del mouse | Deslizar dos dedos |
+| Girar para mirar alrededor | `Q` `E`, `←` `→` o arrastrar con el clic presionado | `Q` `E` o `←` `→` |
+| Moverte a los lados | `A` `D` | `A` `D` |
 | Saltar | `Espacio` | `Espacio` |
-| Mirar alrededor | Mover el mouse | Mover el cursor |
 | Ver un proyecto | Clic en su panel | Tocar el touchpad sobre su panel |
 
 La misma ayuda aparece en una tarjeta en la esquina superior derecha de la escena.
