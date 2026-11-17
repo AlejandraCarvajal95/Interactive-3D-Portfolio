@@ -7,6 +7,8 @@ import MiniCities from './components/mini-cities/MiniCities.jsx'
 import Sky from './components/Sky.jsx'
 import Road from './components/Road.jsx'
 import SkyReflection from './components/SkyReflection.jsx'
+import SoftAmbient from './components/lights/SoftAmbient.jsx'
+import SunLight from './components/lights/SunLight.jsx'
 import Water from './components/Water.jsx'
 import { IS_DEBUG } from './utils/debug.js'
 import './App.css'
@@ -19,12 +21,15 @@ export default function App() {
     <div className="app">
       <Sky />
       <Canvas
+        shadows
         gl={{ antialias: true }}
         camera={{ position: CAMERA_POSITION, fov: 60, near: 0.1, far: 1000 }}
       >
         <CameraTarget target={CAMERA_TARGET} />
         {IS_DEBUG && <DebugControls target={CAMERA_TARGET} />}
         <Fog />
+        <SunLight />
+        <SoftAmbient />
         <Suspense fallback={null}>
           <SkyReflection />
         </Suspense>
