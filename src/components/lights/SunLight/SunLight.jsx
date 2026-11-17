@@ -5,15 +5,30 @@ import { readCssVar } from '../../../utils/cssVar.js'
 import { IS_DEBUG } from '../../../utils/debug.js'
 import './SunLight.css'
 
-// El sol: luz direccional (rayos paralelos) con sombras. Está bajo y detrás de
-// las ciudades, a la izquierda, para que las sombras caigan sobre el agua hacia
-// la cámara.
-const SUN_POSITION = [-25, 22, -75]
+// El sol: luz direccional (rayos paralelos) con sombras. Viene del mismo lado
+// que el disco solar del horizonte (SunDisc): del fondo de la carretera, en
+// línea con ella. Así las siluetas de las ciudades proyectan sus sombras sobre
+// el agua hacia quien mira.
+//
+// El disco real está casi a ras del agua (≈ 3° de altura); con tan poca altura
+// la luz casi no daría sobre nada y las sombras serían larguísimas, así que la
+// luz se eleva a SUN_ELEVATION grados: viene del fondo pero desde bastante más
+// arriba.
 const SUN_TARGET = [0, 0, -30]
+const SUN_DISTANCE = 90
+const SUN_ELEVATION = 35 // grados sobre el horizonte
+const elevation = (SUN_ELEVATION * Math.PI) / 180
+const SUN_POSITION = [
+  SUN_TARGET[0],
+  SUN_TARGET[1] + SUN_DISTANCE * Math.sin(elevation),
+  SUN_TARGET[2] - SUN_DISTANCE * Math.cos(elevation),
+]
 
-// Zona (en unidades de la escena) donde se calculan las sombras. Lo que quede
-// fuera de este cuadro no proyecta sombra.
-const SHADOW_AREA = 32
+// Zona (en unidades de la escena) donde se calculan las sombras: media anchura
+// y media altura vistas desde la luz. Lo que quede fuera no proyecta sombra.
+const SHADOW_HALF_WIDTH = 24
+const SHADOW_HALF_HEIGHT = 20
+const SHADOW_FAR = 200
 const SHADOW_MAP_SIZE = 2048
 
 // Helpers de depuración (SCRUM-38): solo se montan con ?debug.
@@ -51,12 +66,12 @@ export default function SunLight() {
 
   useLayoutEffect(() => {
     const { camera } = lightRef.current.shadow
-    camera.left = -SHADOW_AREA
-    camera.right = SHADOW_AREA
-    camera.top = SHADOW_AREA
-    camera.bottom = -SHADOW_AREA
+    camera.left = -SHADOW_HALF_WIDTH
+    camera.right = SHADOW_HALF_WIDTH
+    camera.top = SHADOW_HALF_HEIGHT
+    camera.bottom = -SHADOW_HALF_HEIGHT
     camera.near = 1
-    camera.far = 120
+    camera.far = SHADOW_FAR
     camera.updateProjectionMatrix()
   }, [])
 

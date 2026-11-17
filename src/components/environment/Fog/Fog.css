@@ -1,3 +1,4 @@
 :root {
-  --fog-color: #5a4bd1;
+  /* Igual al horizonte del cielo, para que el agua se funda con él. */
+  --fog-color: var(--sky-horizon);
 }

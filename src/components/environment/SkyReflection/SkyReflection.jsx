@@ -34,8 +34,8 @@ export default function SkyReflection() {
         form="circle"
         color={colors.sun}
         intensity={3}
-        position={[0, 2, -15]}
-        scale={4}
+        position={[0, 2, -60]}
+        scale={16}
       />
       <Lightformer
         color={colors.blue}

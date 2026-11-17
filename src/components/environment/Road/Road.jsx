@@ -106,9 +106,9 @@ export default function Road() {
         emissive="#ffffff"
         emissiveMap={marble}
         emissiveIntensity={0.9}
-        roughness={0.45}
+        roughness={0.6}
         metalness={0}
-        envMapIntensity={0.7}
+        envMapIntensity={0.25}
       />
     </mesh>
   )

@@ -1,5 +1,5 @@
 :root {
-  --sky-color: #5a4bd1;
+  --sky-color: var(--sky-horizon);
 }
 
 .sky {
