@@ -18,6 +18,7 @@ import MiniCities from './components/mini-cities/MiniCities/MiniCities.jsx'
 import RoadColliders from './components/physics/RoadColliders/RoadColliders.jsx'
 import StationSensors from './components/physics/StationSensors/StationSensors.jsx'
 import Walker from './components/physics/Walker/Walker.jsx'
+import HelpCard from './components/ui/HelpCard/HelpCard.jsx'
 import { KEYBOARD_MAP } from './data/controls.js'
 import { IS_DEBUG, SHOW_PHYSICS, SHOW_STATS } from './utils/debug.js'
 import './App.css'
@@ -73,6 +74,7 @@ export default function App() {
           </Suspense>
         </Canvas>
       </KeyboardControls>
+      <HelpCard />
     </div>
   )
 }

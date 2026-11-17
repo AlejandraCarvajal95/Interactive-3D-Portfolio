@@ -50,7 +50,8 @@ src/
 │   ├── glass/              Cristal: paneles, burbujas y su material
 │   ├── lights/             Luces: SunLight, SoftAmbient
 │   ├── mini-cities/        Las mini-ciudades de cada proyecto
-│   └── physics/            Física (Rapier): colliders, sensores y el visitante
+│   ├── physics/            Física (Rapier): colliders, sensores y el visitante
+│   └── ui/                 Interfaz 2D sobre la escena: tarjeta de ayuda con los controles
 ├── data/                   Datos: proyectos, piezas de las ciudades, burbujas, teclas
 ├── hooks/                  Hooks propios (entrada de navegación)
 └── utils/                  Utilidades (variables CSS, modos de revisión, aleatorio)
